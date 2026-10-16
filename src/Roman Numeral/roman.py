@@ -1,5 +1,3 @@
-import string
-
 __author__ = 'smelnyk'
 
 # http://codingdojo.org/cgi-bin/index.pl?KataRomanNumerals
@@ -18,11 +16,11 @@ def get_roman_numeral(number):
 
     numeral = ''
 
+    if not isinstance(number, int):
+        raise TypeError("The value you entered is invalid: {num} is not a positive integer.".format(num=number))
+
     if number <= 0:
         raise TypeError("The number you entered is invalid: {num} is not a positive integer.".format(num=number))
-
-    if not isinstance(number, (int, long)):
-        raise TypeError("The value you entered is invalid: {num} is not a positive integer.".format(num=number))
 
     while number >= 1000:
         numeral += 'M'
@@ -84,57 +82,15 @@ def get_number_from_roman_numeral(numeral):
     """
     Return the number represented by the single numeral
     """
-    # e.g. "V" -> 5, "I" -> 1
-    # TODO: Will need to consider the lowercase of these characters as well
-    # 1 = I, i
-    # 4 = IV, iv
-    # 5 = V, v
-    # 9 = IX, ix
-    # 10 = X, x
-    # 40 = XL, xl
-    # 50 = L, l
-    # 90 = XC, xc
-    # 100 = C, c
-    # 400 = CD, cd
-    # 500 = D, d
-    # 900 = CM, cm
-    # 1000 = M, m
-
-    # check if the "I" is followed by another "I", if so - add 1 and continue as normal
-    # if not - "I" will subtract 1 and then it'll add and continue as normal
-    # IV = -1 + 5 = 4
-    # IX = -1 + 10 = 9
-
-
-    numeral = string.upper()
-
-    Roman_Value_Map = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+    values = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+    numeral = numeral.upper()
     number = 0
 
-    numeral_split = list(numeral)
-    first_roman = numeral_split[0]
-    second_roman = numeral_split[1]
+    for index, roman_letter in enumerate(numeral):
+        value = values[roman_letter]
+        if index + 1 < len(numeral) and value < values[numeral[index + 1]]:
+            number -= value
+        else:
+            number += value
 
-    print numeral_split
-    print first_roman
-    print second_roman
-
-    if first_roman == second_roman:
-        for roman_letter in numeral_split:
-            if roman_letter == 'L':
-                number += 50
-            elif roman_letter == 'X':
-                number += 10
-            elif roman_letter == 'V':
-                number += 5
-            else:
-                number += 1
-    else:
-        for roman_letter in numeral_split:
-            if roman_letter == ['I'] and ['X']:
-                number += 9
-            elif roman_letter == ['I'] and ['V']:
-                number += 4
-
-    print number
     return number
