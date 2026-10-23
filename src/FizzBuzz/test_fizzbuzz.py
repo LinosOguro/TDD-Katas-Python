@@ -1,10 +1,20 @@
-# Nota para quem for fazer este kata:
-# Escreva testes para uma funcao que recebe um numero e retorna:
-# - "Fizz" quando for divisivel por 3;
-# - "Buzz" quando for divisivel por 5;
-# - "FizzBuzz" quando for divisivel por 3 e por 5;
-# - o proprio numero quando nao for divisivel por nenhum dos dois.
-#
-# Comece com casos simples (por exemplo, 1, 3 e 5) e adicione um caso
-# para 15, que deve retornar "FizzBuzz". Escreva um teste por vez e
-# implemente apenas o necessario para faze-lo passar.
+import pytest
+
+from fizzbuzz import FizzBuzz
+
+
+@pytest.mark.parametrize(
+    ("number", "expected"),
+    [
+        (1, 1),
+        (2, 2),
+        (3, "Fizz"),
+        (6, "Fizz"),
+        (5, "Buzz"),
+        (10, "Buzz"),
+        (15, "FizzBuzz"),
+        (30, "FizzBuzz"),
+    ],
+)
+def test_convert(number, expected):
+    assert FizzBuzz().convert(number) == expected
